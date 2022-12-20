@@ -4,7 +4,7 @@
 # Maintainer : Thomas Baechler <thomas@archlinux.org>
 
 _linuxprefix=linux-xanmod
-_extramodules=extramodules-6.1-MANJARO
+_extramodules=6.1.0-x64v1-xanmod1-1
 
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
@@ -34,6 +34,7 @@ prepare() {
 
 build() {
     _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
+#     _kernver=6.1.0-x64v1-xanmod1-1
 
     cd "${_pkg}"
     make -C kernel SYSSRC=/usr/lib/modules/"${_kernver}/build" module
