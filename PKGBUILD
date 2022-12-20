@@ -33,7 +33,7 @@ prepare() {
 }
 
 build() {
-    _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
+    _kernver=${_extramodules}
 #     _kernver=6.1.0-x64v1-xanmod1-1
 
     cd "${_pkg}"
