@@ -1,7 +1,7 @@
-EXTRAMODULES='extramodules-6.1-MANJARO'
+EXTRAMODULES=$(find /usr/lib/modules -type d -iname 6.1.7*xanmod* | rev | cut -d "/" -f1 | rev)
 
 post_install() {
-    depmod "$(cat /usr/lib/modules/${EXTRAMODULES}/version)"
+    depmod $(find /usr/lib/modules -type d -iname 6.1.7*xanmod* | rev | cut -d "/" -f1 | rev)
 }
 
 post_upgrade() {
