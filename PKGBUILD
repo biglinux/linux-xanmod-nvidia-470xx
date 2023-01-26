@@ -4,12 +4,12 @@
 # Maintainer : Thomas Baechler <thomas@archlinux.org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 23.01.03*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 6.1.8*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.161.03
-pkgrel=2301030216
+pkgrel=6181
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -33,7 +33,7 @@ prepare() {
 }
 
 build() {
-    _kernver="$(cat /usr/lib/modules/${_extramodules}/version)"
+    _kernver=$(find /usr/lib/modules -type d -iname 6.1.8*xanmod* | rev | cut -d "/" -f1 | rev)
 
     cd "${_pkg}"
     make -C kernel SYSSRC=/usr/lib/modules/"${_kernver}/build" module
