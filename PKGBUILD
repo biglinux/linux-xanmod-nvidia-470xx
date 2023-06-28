@@ -5,12 +5,12 @@
 # Maintainer : Thomas Baechler <thomas@archlinux.org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.3.9*xanmod* | rev | cut -d "/" -f1 | rev)
+_extramodules=$(find /usr/lib/modules -type d -iname 6.4.0*xanmod* | rev | cut -d "/" -f1 | rev)
 
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.199.02
-pkgrel=63910
+pkgrel=64010
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -21,8 +21,10 @@ provides=("nvidia=$pkgver" 'NVIDIA-MODULE')
 options=(!strip)
 install=nvidia.install
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
-source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
-sha256sums=('9c86f9ef6aceaf2b292407aa161b98d817b2eb10a615f971d29a20c2a748ad09')
+source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run"
+        'kernel-6.4.patch')
+sha256sums=('9c86f9ef6aceaf2b292407aa161b98d817b2eb10a615f971d29a20c2a748ad09'
+            '9fbab269f00beb78b44e4693ea44b399e4122a3dfba00322af3e5e3485a1eed3')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
@@ -31,10 +33,11 @@ prepare() {
 
     cd "${_pkg}/kernel"
     # patches here
+    patch -Np1 -i ../../kernel-6.4.patch
 }
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.3.9*xanmod* | rev | cut -d "/" -f1 | rev)
+    _kernver=$(find /usr/lib/modules -type d -iname 6.4.0*xanmod* | rev | cut -d "/" -f1 | rev)
 
     cd "${_pkg}"
     make -C kernel SYSSRC=/usr/lib/modules/"${_kernver}/build" module
