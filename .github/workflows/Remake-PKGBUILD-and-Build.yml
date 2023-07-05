@@ -1,7 +1,7 @@
 name: Remake PKGBUILD and Build Package
 
 on:
-  workflow_dispatch:
+  # workflow_dispatch:
 
   # push:
     #branches: [ "master", "main", "*" ]
