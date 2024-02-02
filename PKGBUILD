@@ -5,12 +5,12 @@
 # Maintainer : Thomas Baechler <thomas@archlinux.org>
 
 _linuxprefix=linux-xanmod
-_extramodules=$(find /usr/lib/modules -type d -iname 6.6.13*xanmod* | rev | cut -d "/" -f1 | rev)
+_kernver="$(cat /usr/src/${_linuxprefix}//build/version)"
 
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.223.02
-pkgrel=66131
+pkgrel=66151
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -19,7 +19,6 @@ depends=("$_linuxprefix" "nvidia-utils=$pkgver")
 makedepends=("$_linuxprefix-headers")
 provides=("nvidia=$pkgver" 'NVIDIA-MODULE')
 options=(!strip)
-install=nvidia.install
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
 source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
 sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98')
@@ -34,7 +33,6 @@ prepare() {
 }
 
 build() {
-    _kernver=$(find /usr/lib/modules -type d -iname 6.6.13*xanmod* | rev | cut -d "/" -f1 | rev)
 
     cd "${_pkg}"
     make -C kernel SYSSRC=/usr/lib/modules/"${_kernver}/build" module
@@ -42,7 +40,7 @@ build() {
 
 package() {
     cd "${_pkg}"
-    install -Dm 644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_extramodules}/"
+    install -Dm 644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_kernver}/extramodules/"
 
     # compress each module individually
     find "${pkgdir}" -name '*.ko' -exec xz -T1 {} +
