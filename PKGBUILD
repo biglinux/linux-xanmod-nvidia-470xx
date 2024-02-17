@@ -10,7 +10,7 @@ _kernver="$(cat /usr/src/${_linuxprefix}/version)"
 pkgname=$_linuxprefix-nvidia-470xx
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.223.02
-pkgrel=66161
+pkgrel=67510
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -20,16 +20,24 @@ makedepends=("$_linuxprefix-headers")
 provides=("nvidia=$pkgver" 'NVIDIA-MODULE')
 options=(!strip)
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
-source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
-sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98')
+source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" 'GPL-workaround.patch')
+sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98'
+            '59958c134261a53edb641ba3c96b13e397d1903ec3637c8be8d61141356292de')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
 prepare() {
     sh "${_pkg}.run" --extract-only
 
-    cd "${_pkg}/kernel"
-    # patches here
+    cd "${_pkg}"
+    local src
+    for src in "${source[@]}"; do
+        src="${src%%::*}"
+        src="${src##*/}"
+        [[ $src = *.patch ]] || continue
+        msg2 "Applying patch: $src..."
+        patch -Np1 < "../$src"
+    done
 }
 
 build() {
