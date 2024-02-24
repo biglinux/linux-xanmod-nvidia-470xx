@@ -5,24 +5,22 @@
 # Maintainer : Thomas Baechler <thomas@archlinux.org>
 
 _linuxprefix=linux-xanmod
-_kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
-pkgname=$_linuxprefix-nvidia-470xx
+pkgname="${_linuxprefix}-nvidia-470xx"
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.223.02
-pkgrel=67510
+pkgrel=67610
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
-groups=("$_linuxprefix-extramodules")
-depends=("$_linuxprefix" "nvidia-utils=$pkgver")
-makedepends=("$_linuxprefix-headers")
-provides=("nvidia=$pkgver" 'NVIDIA-MODULE')
+groups=("${_linuxprefix}-extramodules")
+depends=("${_linuxprefix}" "nvidia-utils=${pkgver}")
+makedepends=("${_linuxprefix}-headers")
+provides=("nvidia=${pkgver}" 'NVIDIA-MODULE')
 options=(!strip)
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
-source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run" 'GPL-workaround.patch')
-sha256sums=('fcffc3defb36eb3a6cf003638efefd9159469c5b2ce90de77dcab642aad03d98'
-            '59958c134261a53edb641ba3c96b13e397d1903ec3637c8be8d61141356292de')
+source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
+sha256sums=(SKIP)
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
@@ -42,12 +40,15 @@ prepare() {
 
 build() {
   _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
 
     cd "${_pkg}"
     make -C kernel SYSSRC=/usr/lib/modules/"${_kernver}/build" module
 }
 
 package() {
+    _kernver="$(cat /usr/src/${_linuxprefix}/version)"
+
     cd "${_pkg}"
     install -Dm 644 kernel/*.ko -t "${pkgdir}/usr/lib/modules/${_kernver}/extramodules/"
 
