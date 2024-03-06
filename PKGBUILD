@@ -8,7 +8,7 @@ _linuxprefix=linux-xanmod
 
 pkgname="${_linuxprefix}-nvidia-470xx"
 pkgdesc="NVIDIA drivers for linux"
-pkgver=470.223.02
+pkgver=470.239.06
 pkgrel=67710
 arch=('x86_64')
 url="http://www.nvidia.com/"
@@ -20,7 +20,7 @@ provides=("nvidia=${pkgver}" 'NVIDIA-MODULE')
 options=(!strip)
 _durl="https://us.download.nvidia.com/XFree86/Linux-x86"
 source=("${_durl}_64/${pkgver}/NVIDIA-Linux-x86_64-${pkgver}-no-compat32.run")
-sha256sums=(SKIP)
+sha256sums=('4a4b2f1a0e5f4403dcc94b5df9970cb064fccee44e82282e6f03dbde6e4dfff0')
 
 _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 
