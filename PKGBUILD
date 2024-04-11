@@ -9,7 +9,7 @@ _linuxprefix=linux-xanmod
 pkgname="${_linuxprefix}-nvidia-470xx"
 pkgdesc="NVIDIA drivers for linux"
 pkgver=470.239.06
-pkgrel=67121
+pkgrel=68510
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -27,14 +27,14 @@ _pkg="NVIDIA-Linux-x86_64-${pkgver}-no-compat32"
 prepare() {
     sh "${_pkg}.run" --extract-only
 
-    cd "${_pkg}"
+    cd "${_pkg}/kernel"
     local src
     for src in "${source[@]}"; do
         src="${src%%::*}"
         src="${src##*/}"
         [[ $src = *.patch ]] || continue
         msg2 "Applying patch: $src..."
-        patch -Np1 < "../$src"
+        patch -Np1 < "../../$src"
     done
 }
 
